@@ -167,19 +167,19 @@ class listener implements EventSubscriberInterface
 			// Collect the querys
 			if(isset($this->config['socialbuttons_facebook']) && ($this->config['socialbuttons_facebook'] == 1))
 			{
-				$querys['facebook']	= 'https://www.facebook.com/plugins/like.php?&layout=box_count&href=' . $url;
+				$querys['facebook']	= 'https://www.facebook.com/plugins/like.php?&layout=box_count&href=' . urlencode($url);
 			}
 			if(isset($this->config['socialbuttons_twitter']) && ($this->config['socialbuttons_twitter'] == 1))
 			{
-				$querys['twitter'] = 'https://cdn.api.twitter.com/1/urls/count.json?url=' . $url;
+				$querys['twitter'] = 'https://cdn.api.twitter.com/1/urls/count.json?url=' . urlencode($url);
 			}
 			if(isset($this->config['socialbuttons_google']) && ($this->config['socialbuttons_twitter'] == 1))
 			{
-				$querys['google'] = 'https://plusone.google.com/_/+1/fastbutton?url=' . $url;
+				$querys['google'] = 'https://plusone.google.com/_/+1/fastbutton?url=' . urlencode($url);
 			}
 			if(isset($this->config['socialbuttons_linkedin']) && ($this->config['socialbuttons_twitter'] == 1))
 			{
-				$querys['linkedin'] = 'https://www.linkedin.com/countserv/count/share?format=json&url=' . $url;
+				$querys['linkedin'] = 'https://www.linkedin.com/countserv/count/share?format=json&url=' . urlencode($url);
 			}
 			
 			// Do we have curl? We can query all platforms paralel what is mutch faster
@@ -194,6 +194,7 @@ class listener implements EventSubscriberInterface
 					curl_setopt($ch, CURLOPT_NOBODY, false);
 					curl_setopt($ch, CURLOPT_HEADER, false); 
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
 					curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1; rv:31.0) Gecko/20100101 Firefox/31.0'); 
 					curl_multi_add_handle($mh, $ch);
 					$handle[$platform] = $ch;
